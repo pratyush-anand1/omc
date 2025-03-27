@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omc-o2ims-deployment
+  labels:
+    app: omc-o2ims
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omc-o2ims
+  template:
+    metadata:
+      labels:
+        app: omc-o2ims
+    spec:
+      serviceAccountName: omc-o2ims-sa
+      hostNetwork: true
+      imagePullSecrets:
+        - name: ccd-cr-registry-creds
+      containers:
+      - name: omc-o2ims-container
+        image: registry.r640-144-cnis.deac.gic.ericsson.se/omc-o2ims:latest
+        ports:
+        - containerPort: 9090
+          hostPort: 9090
+        resources:
+          requests:
+            memory: "512Mi"   # Minimum memory requested
+            cpu: "150m"       # Minimum CPU requested (250 millicores = 0.25 cores)
+          limits:
+            memory: "1Gi"     # Maximum memory allowed
+            cpu: "200m"       # Maximum CPU allowed (500 millicores = 0.5 cores)

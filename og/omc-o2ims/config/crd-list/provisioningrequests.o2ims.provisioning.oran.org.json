@@ -1,0 +1,138 @@
+{
+    "apiVersion": "apiextensions.k8s.io/v1",
+    "kind": "CustomResourceDefinition",
+    "metadata": {
+        "name": "provisioningrequests.o2ims.provisioning.oran.org"
+    },
+    "spec": {
+        "conversion": {
+            "strategy": "None"
+        },
+        "group": "o2ims.provisioning.oran.org",
+        "names": {
+            "kind": "ProvisioningRequest",
+            "listKind": "ProvisioningRequestList",
+            "plural": "provisioningrequests",
+            "singular": "provisioningrequest"
+        },
+        "scope": "Cluster",
+        "versions": [
+            {
+                "name": "v1alpha1",
+                "schema": {
+                    "openAPIV3Schema": {
+                        "properties": {
+                            "apiVersion": {
+                                "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nThe current apiVersion of this api is v1alpha1",
+                                "type": "string"
+                            },
+                            "kind": {
+                                "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nThe kind value for this api is ProvisioningRequest ",
+                                "type": "string"
+                            },
+                            "metadata": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the ProvisioningRequest custom resource instance contains the provisioningItemId. \nThe provisioningItemId is the unique SMO provided identifier that the SMO will use to\nidentify all resources provisioned by this provisioning request in interactions\nwith the O-Cloud.\n",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "spec": {
+                                "properties": {
+                                    "description": {
+                                        "description": "A description of this provisioning request.\n",
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "description": "the name in this spec section is a human readable name intended for descriptive\npurposes, this name is not required to be unique and does not identify a provisioning\nrequest or any provisioned resources.\n",
+                                        "type": "string"
+                                    },
+                                    "templateName": {
+                                        "description": "templateName is the name of the template that the SMO wants to use to provision\nresources\n",
+                                        "type": "string"
+                                    },
+                                    "templateParameters": {
+                                        "description": "templateParams carries the parameters required to provision resources using this template.\nThe type is object as actual parameters are defined by the template.\nThe template parameter schema itself is not defined here as it is template specific. \nThe themplate parameter schema must be published by the template provider so that FOCOM can \nlearn about required parameters and validate the same. \nThe template parameter schema language must be standardized by O-RAN.   \n",
+                                        "type": "object",
+                                        "x-kubernetes-preserve-unknown-fields": true
+                                    },
+                                    "templateVersion": {
+                                        "description": "templateVersion is the version of the template that the SMO wants to use to provision\nresources. templateName and templateVersion together uniquely identify the template\ninstance that the SMO wants to use in the provisioning request.\n",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "templateName",
+                                    "templateVersion",
+                                    "templateParameters"
+                                ],
+                                "type": "object"
+                            },
+                            "status": {
+                                "description": "ProvisioningRequestStatus defines the observed state of ProvisioningRequest",
+                                "properties": {
+                                    "extensions": {
+                                        "description": "Extensions contain extra details about the resources and the configuration used for/by\nthe ProvisioningRequest.",
+                                        "type": "object",
+                                        "x-kubernetes-preserve-unknown-fields": true
+                                    },
+                                    "provisionedResources": {
+                                        "description": "The resources that have been successfully provisioned as part of the provisioning process.\n",
+                                        "properties": {
+                                            "oCloudInfrastructureResourceIds": {
+                                                "description": "The list of provisioned infrastructure resource ids.\n",
+                                                "items": {
+                                                    "description": "The provisioned infrastructure resource id.\n",
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "oCloudNodeClusterId": {
+                                                "description": "The identifier of the provisioned oCloud NodeCluster.\n",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "provisioningStatus": {
+                                        "properties": {
+                                            "provisioningMessage": {
+                                                "description": "The details about the current state of the provisioning process.\n",
+                                                "type": "string"
+                                            },
+                                            "provisioningState": {
+                                                "description": "The current state of the provisioning process.",
+                                                "enum": [
+                                                    "progressing",
+                                                    "fulfilled",
+                                                    "failed",
+                                                    "deleting"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "provisioningUpdateTime": {
+                                                "description": "The last update time of the provisioning status.\n",
+                                                "format": "date-time",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "served": true,
+                "storage": true,
+                "subresources": {
+                    "status": {}
+                }
+            }
+        ]
+    }
+}

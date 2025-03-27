@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Hello API
+  description: This API provides a simple Hello World endpoint.
+  version: 1.0.0
+  contact: {}
+paths:
+  /hello:
+    get:
+      description: Responds with a JSON object containing "Hello, World!"
+      tags:
+        - Hello
+      summary: Returns a Hello, World! message
+      responses:
+        "200":
+          description: Returns a JSON object with a message
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
